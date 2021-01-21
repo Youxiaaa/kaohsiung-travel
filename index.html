@@ -195,6 +195,7 @@
           let items = []
 
           if (vm.currentZone !== '') {
+            vm.currentPage = 0
             items = vm.data.filter((item) => {
               return item.Add.indexOf(vm.currentZone) !== -1
             })
