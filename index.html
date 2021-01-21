@@ -21,7 +21,7 @@
   .banner{
     height: 60vh;
     width: 100%;
-    background-image: url('https://images.unsplash.com/photo-1557318762-480326f15dc8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80');
+    background-image: url('https://images.unsplash.com/photo-1557318762-480326f15dc8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=803');
     background-position: bottom center;
     background-size: cover;
     background-attachment: fixed;
@@ -74,7 +74,7 @@
     <header>
       <div class="banner d-flex justify-content-center align-items-center">
         <div>
-          <h1 class="mb-5 text-white">高雄旅遊資訊網</h1>
+          <h1 class="mb-5 text-white">高 雄 旅 遊 資 訊 網</h1>
           <select name="" id="" class="px-5 py-2 form-control" v-model="currentZone">
             <option value="" class="text-center" disabled>請選擇行政區...</option>
             <option :value='item' v-for="item in locations"> {{ item }} </option>
@@ -89,26 +89,27 @@
           <div class="col-md-6 my-3" v-for="(item , key) in filterData[currentPage]">
             <div class="card h-100">
               <div class="card-header p-0">
-                <img :src="item.Picture1" alt="" height="300px" width="100%">
+                <img :src="item.Picture1" :alt="item.Picdescribe1" height="300px" width="100%">
               </div>
               <div class="card-body">
-                <h3 class="h6 text-secondary"><span class="text-primary"><i class="fas fa-home"></i> </span> {{ item.Name }} </h3>
-                <h3 class="h6 text-secondary"><span class="text-success"><i class="fas fa-thumbtack"></i> </span> {{ item.Add }} </h3>
-                <h3 class="h6 text-secondary"><span class="text-warning"><i class="fas fa-phone-alt"></i> </span>{{ item.Tel }} </h3>
-                <h3 class="h6 text-secondary"><span class="text-warning"><i class="far fa-clock"></i> </span>{{ item.Opentime }} </h3>
-                <h3 class="h6 text-secondary" v-if="item.Ticketinfo"><span class="text-info"><i class="fas fa-clipboard-check"></i> </span> {{ item.Ticketinfo }} </h3>
+                <h3 class="h6 text-secondary"><span class="text-primary"><i class="fas fa-home mr-1"></i> </span> {{ item.Name }} </h3>
+                <h3 class="h6 text-secondary"><span class="text-success"><i class="fas fa-thumbtack mr-1"></i> </span> {{ item.Add }} </h3>
+                <h3 class="h6 text-secondary"><span class="text-warning"><i class="fas fa-phone-alt mr-2"></i> </span>{{ item.Tel }} </h3>
+                <h3 class="h6 text-secondary"><span class="text-danger"><i class="far fa-clock mr-2"></i> </span>{{ item.Opentime }} </h3>
+                <h3 class="h6 text-secondary" v-if="item.Ticketinfo"><span class="text-info"><i class="fas fa-clipboard-check mr-2"></i> </span> {{ item.Ticketinfo }} </h3>
+                <h3 class="h6 text-secondary" v-if="item.Travellinginfo"><span class="text-success"><i class="fas fa-map-signs mr-2"></i> </span>{{ item.Travellinginfo }} </h3>
               </div>
             </div>
           </div>
         </div>
-        <nav aria-label="Page navigation example" class="d-flex justify-content-center my-5 computerPagination">
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center my-5 computerPagination" v-if="pageLen !== 1">
           <ul class="pagination">
             <li class="page-item"><a class="page-link" href="#" @click.prevent="currentPage = currentPage - 1" :class="{'pageDisabled': currentPage === 0}"> < </a></li>
             <li class="page-item" v-for="item in filterData.length" :class="{'active': currentPage + 1 === item}"><a class="page-link" href="#" @click.prevent="currentPage = (item - 1)"> {{ item }} </a></li>
             <li class="page-item"><a class="page-link" href="#" @click.prevent="currentPage = currentPage + 1" :class="{'pageDisabled': currentPage + 1 === pageLen}"> > </a></li>
           </ul>
         </nav>
-        <div class="d-flex justify-content-center align-items-center my-5 phonePagination">
+        <div class="d-flex justify-content-center align-items-center my-5 phonePagination" v-if="pageLen !== 1">
           第
           <select name="" id="" v-model="currentPage" class="p-2 mx-2">
             <option :value="(item - 1)" v-for="item in filterData.length" @click.prevent="currentPage = item"> {{ item }} </option>
@@ -123,10 +124,10 @@
         <div class="row">
           <div class="col-md-4 px-0"></div>
           <div class="col-md-4 text-center px-0">
-            <h2 class="h5 text-secondary ml-auto">copyright &copy; 2021 YoYo游</h2>
+            <h2 class="h6 text-secondary ml-auto">copyright &copy; 2021 YoYo游</h2>
           </div>
           <div class="col-md-4 text-right px-0">
-            <ul class="d-flex ml-auto">
+            <ul class="d-flex justify-content-center p-0">
               <li class="mx-2 list-unstyled"><a href="https://www.facebook.com/YuTsungChih" target="_blank"><i class="fab fa-facebook-f text-success fa-2x"></i></a></li>
               <li class="mx-2 list-unstyled"><a href="https://www.instagram.com/youxiaaaaaa/" target="_blank"><i class="fab fa-instagram text-danger fa-2x"></i></a></li>
               <li class="mx-2 list-unstyled"><a href="https://github.com/Youxiaaa" target="_blank"><i class="fab fa-github text-info fa-2x"></i></a></li>
