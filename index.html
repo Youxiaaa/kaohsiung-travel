@@ -21,8 +21,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 </head>
 <style>
+  html,body{
+    scroll-behavior: smooth;
+  }
+
   .loading-background{
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
     height: 100%;
     width: 100%;
     position: fixed;
@@ -30,12 +34,18 @@
   }
 
   .banner{
-    height: 60vh;
+    height: 100vh;
     width: 100%;
-    background-image: url('https://images.unsplash.com/photo-1557318762-480326f15dc8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=803');
-    background-position: bottom center;
+    background-image: url('https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1653&q=80');
+    background-position: center center;
     background-size: cover;
     background-attachment: fixed;
+  }
+
+  .banner select{
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border: none;
   }
 
   .pageDisabled{
@@ -56,12 +66,53 @@
   }
 
   .footerBar{
-    background-color: rgb(224, 224, 224);
+    background-color: #FFA93B;
     padding-top: 30px;
   }
 
   .footerBar .row{
     width: 100%;
+  }
+
+  .backTop{
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 1s ease;
+    z-index: 9999;
+  }
+
+  .backTop img{
+    width: 35px;
+    height: 25px;
+  }
+
+  .showBacktotop{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .toBottomBtn img{
+    width: 40px;
+    height: 40px;
+    animation: 5s infinite toBottom;
+  }
+
+  @keyframes toBottom{
+    0%{transform: translateY(-10px);}
+    10%{transform: translateY(0);}
+    20%{transform: translateY(-10px);}
+    30%{transform: translateY(0);}
+    40%{transform: translateY(-10px);}
+    50%{transform: translateY(0);}
+    60%{transform: translateY(-10px);}
+    70%{transform: translateY(0);}
+    80%{transform: translateY(-10px);}
+    90%{transform: translateY(0);}
+    100%{transform: translateY(-10px);}
   }
 </style>
 <body>
@@ -69,9 +120,11 @@
     <div class="loading-background d-flex justify-content-center align-items-center" v-if="isLoading">
       <div class="text-center">
         <h5>
+          <span class="h4 text-info">資</span>
+          <span class="h4 text-danger">料</span>
           <span class="h4 text-primary">載</span>
           <span class="h4 text-success">入</span>
-          <span class="h4 text-dark">中</span>
+          <span class="h4 text-info">中</span>
           <span class="h4 text-danger">請</span>
           <span class="h4 text-info">稍</span>
           <span class="h4 text-danger">候</span>
@@ -83,19 +136,24 @@
     </div>
 
     <header>
-      <div class="banner d-flex justify-content-center align-items-center">
-        <div>
-          <h1 class="mb-5 text-white">高 雄 旅 遊 資 訊 網</h1>
-          <select name="" id="" class="px-5 py-2 form-control" v-model="currentZone">
-            <option value="" class="text-center" disabled>請選擇行政區...</option>
+      <div class="banner d-flex flex-column justify-content-center align-items-center">
+        <div class="mt-auto">
+          <h1 class="mb-5 text-dark">高 雄 旅 遊 資 訊 網</h1>
+          <select class="form-control" v-model="currentZone">
+            <option value="" class="text-center" disabled>請 選 擇 行 政 區...</option>
             <option :value='item' v-for="item in locations"> {{ item }} </option>
           </select>
         </div>
+        <a href="#cardArea" class="toBottomBtn mt-auto">
+          <img src="/Arrow_bottom.svg" alt="toBottom">
+        </a>
       </div>
     </header>
 
-    <section>
+    <section id="cardArea">
       <div class="container">
+        <h2 class="text-center my-5 text-secondary" v-if="currentZone === ''">  - 全 部 區 域 - </h2>
+        <h2 class="text-center my-5 text-secondary" v-else> - {{ currentZone }} - </h2>
         <div class="row">
           <div class="col-md-6 my-3" v-for="(item , key) in filterData[currentPage]">
             <div class="card h-100">
@@ -130,18 +188,26 @@
       </div>  
     </section>
 
+    <div class="backTop" :class="{'showBacktotop' : showBacktotop}">
+      <a href="#">
+        <img src="/backTop.png" alt="backTotopIcon">
+      </a>
+    </div>
+
     <footer>
       <div class="footerBar">
         <div class="row m-0">
-          <div class="col-md-4 px-0"></div>
+          <div class="col-md-4 px-0">
+            <h2 class="h6 text-center text-dark">資料來源 ： 高雄市政府API</h2>
+          </div>
           <div class="col-md-4 text-center px-0">
-            <h2 class="h6 text-secondary ml-auto">copyright &copy; 2021 YoYo游</h2>
+            <h2 class="h6 text-dark ml-auto">Copyright &copy; 2021 YoYo游</h2>
           </div>
           <div class="col-md-4 px-0">
             <ul class="d-flex justify-content-center p-0">
-              <li class="mx-2 list-unstyled"><a href="https://www.facebook.com/YuTsungChih" target="_blank"><i class="fab fa-facebook-f text-success fa-2x"></i></a></li>
-              <li class="mx-2 list-unstyled"><a href="https://www.instagram.com/youxiaaaaaa/" target="_blank"><i class="fab fa-instagram text-danger fa-2x"></i></a></li>
-              <li class="mx-2 list-unstyled"><a href="https://github.com/Youxiaaa" target="_blank"><i class="fab fa-github text-info fa-2x"></i></a></li>
+              <li class="mx-2 list-unstyled"><a href="https://www.facebook.com/YuTsungChih" target="_blank"><i class="fab fa-facebook-f text-success h4"></i></a></li>
+              <li class="mx-2 list-unstyled"><a href="https://www.instagram.com/youxiaaaaaa/" target="_blank"><i class="fab fa-instagram text-danger h4"></i></a></li>
+              <li class="mx-2 list-unstyled"><a href="https://github.com/Youxiaaa" target="_blank"><i class="fab fa-github text-info h4"></i></a></li>
             </ul>
           </div>
         </div>
@@ -158,46 +224,22 @@
         currentPage: 0,
         pageLen: 0,
         locations: [
-          '鹽埕區',
-          '鼓山區',
-          '左營區',
-          '楠梓區',
-          '三民區',
-          '新興區',
-          '前金區',
-          '苓雅區',
-          '前鎮區',
-          '旗津區',
-          '小港區',
-          '鳳山區',
-          '林園區',
-          '大寮區',
-          '大樹區',
-          '大社區',
-          '仁武區',
-          '鳥松區',
-          '岡山區',
-          '橋頭區',
-          '燕巢區',
-          '田寮區',
-          '阿蓮區',
-          '路竹區',
-          '湖內區',
-          '茄萣區',
-          '永安區',
-          '彌陀區',
-          '梓官區',
-          '旗山區',
-          '美濃區',
-          '六龜區',
-          '甲仙區',
-          '杉林區',
-          '內門區',
-          '茂林區',
-          '桃源區',
-          '那瑪夏區'
+          '鹽埕區','鼓山區','左營區','楠梓區','三民區','新興區','前金區','苓雅區','前鎮區','旗津區','小港區','鳳山區','林園區','大寮區','大樹區','大社區','仁武區','鳥松區','岡山區','橋頭區','燕巢區','田寮區','阿蓮區','路竹區','湖內區','茄萣區','永安區','彌陀區','梓官區','旗山區','美濃區','六龜區','甲仙區','杉林區','內門區','茂林區','桃源區','那瑪夏區'
         ],
-        currentZone: ''
+        currentZone: '',
+        cardPos: document.querySelector('#cardArea').offsetTop,
+        showBacktotop: false
+      },
+      methods: {
+        backtoTop () {
+          const vm = this
+          const scrollPos = document.documentElement.scrollTop
+          if (scrollPos > 800) {
+            vm.showBacktotop = true
+          } else {
+            vm.showBacktotop = false
+          }
+        }
       },
       computed: {
         filterData () {
@@ -207,6 +249,7 @@
 
           if (vm.currentZone !== '') {
             vm.currentPage = 0
+            document.documentElement.scrollTop = vm.cardPos
             items = vm.data.filter((item) => {
               return item.Add.indexOf(vm.currentZone) !== -1
             })
@@ -233,6 +276,7 @@
           vm.data = res.data.data.XML_Head.Infos.Info
           vm.isLoading = false
         })
+        window.addEventListener('scroll', this.backtoTop)
       }
     })
   </script>
